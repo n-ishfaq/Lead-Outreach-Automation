@@ -1,0 +1,3904 @@
+{
+  "name": "Lead Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "41df1e1a-b55c-4d78-9b80-2f3a6dd882dc",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -620,
+        -340
+      ],
+      "id": "bdaaa220-92a9-4571-89a5-33a99fe44e2f",
+      "name": "Webhook",
+      "webhookId": "41df1e1a-b55c-4d78-9b80-2f3a6dd882dc"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -140,
+        300
+      ],
+      "id": "09440f6c-4e2e-48f8-8aa1-582f5037f8aa",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "inputText": "=Input: \n{{ $json.body.chatInput }}\n{{ $json.body.outreach_type }}\n{{ $json.body.apollo_input }},\n{{ $json.body.sheet_url }},\n{{ $json.body.compaign_id }},\n{{ $json.body.lead_list_name }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "linkedin outreach",
+              "description": "This message look like linked outreach, user are find some lead on linkedin,user provide some detail about agencies."
+            },
+            {
+              "category": "email automation",
+              "description": "=This message related to email automation, e.g Can scrape the apify leads from Google Map  35% leads will get emails.  Ready without pitch, so this related to email automation"
+            },
+            {
+              "category": "linkedin followup",
+              "description": "=this message related to linkedin follow up, its look like user wnat to sreply back with user, some thing like ,reply my all linkedin user."
+            },
+            {
+              "category": "Ignore",
+              "description": "=This message not related to any field, may be its user first message or user say ,hy,hello,this type of message not related to any field."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        -400,
+        -360
+      ],
+      "id": "3e281756-2939-442c-a55d-e1f460521194",
+      "name": "Text Classifier"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -600,
+        -20
+      ],
+      "id": "8b88bbdf-cde6-4cd3-8206-a3a72a3e2965",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "xLSQRABRBCRfmWjf",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an ai agnet that help user to tell our services.\nUser Input: {{ $json.body.chatInput }}\n",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=we are proiding main three services. 1. linkedin outreach 2. linkedin follow up / reply 3. email automation / lead generation You are helpful ai that encourage user to ask message related to this and provide information.  Rule: follow a natural tone and answer like polite and  clean. \nOutput : Provide me output in this formate.\n{\noutput:\"\"\n}"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -560,
+        300
+      ],
+      "id": "243038a8-eca8-4fb7-9452-a35f4d0de924",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -580,
+        740
+      ],
+      "id": "13ffcdc6-da30-490b-a6ca-71ae05419dec",
+      "name": "Groq Chat Model1",
+      "credentials": {
+        "groqApi": {
+          "id": "xLSQRABRBCRfmWjf",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"output\":\"\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -440,
+        740
+      ],
+      "id": "64bd1469-35ee-44ff-8bc9-80360d908710",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 640,
+        "width": 540,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -620,
+        -400
+      ],
+      "typeVersion": 1,
+      "id": "cb81a9fb-f045-4fd2-9c5b-26b704fd5edd",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Linkedin Outreach\n",
+        "height": 640,
+        "width": 1360,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -40,
+        -440
+      ],
+      "typeVersion": 1,
+      "id": "b081d02b-af94-4ae6-94a4-031da9a665d0",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "Linkedin Outreach\n",
+        "height": 420,
+        "width": 560,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -620,
+        260
+      ],
+      "typeVersion": 1,
+      "id": "58763660-e86b-4930-a401-b76ee6eb9ed5",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "# Linkedin Outreach(Module 2)\n",
+        "height": 920,
+        "width": 1360
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        60,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "9dc2bfab-14cc-407d-9df8-9c60ad5e080a",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "maxItems": 30
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        920,
+        -300
+      ],
+      "id": "accdb3c5-5bb8-40ec-9166-e8323e07b9f4",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.phantombuster.com/api/v2/agents/launch",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Phantombuster-Key",
+              "value": "o80Y2lUU4NOETzIzX6faVxT8ohFWzIpHKohCmOy5Rig"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "id",
+              "value": "6061812337722873"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        -20
+      ],
+      "id": "c501ad0f-941d-4eeb-a8e1-72f8159c273b",
+      "name": "Trigger PhantomBuster Agent"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        480,
+        -20
+      ],
+      "id": "1fab38c1-5744-4d03-bb6d-afb17d48d7d2",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are a helpful, intelligent writing assistant.",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Your task is to take as input a bunch of LinkedIn profile information of a user, and then generate a very short, very punchy icebreaker that I can use as a variable in my connection request.\n\nReturn your results in this format:\n\n{\"icebreaker\":\"Icebreaker goes here\"}\n\nIn order to ensure icebreakers are punchy and high-quality, make them follow this template:\n\nHey {{name}}, loved seeing {{thingAboutThem}}. I'm also into {{plausibleTieIn}}, thought I'd connect.\n\nFor {{thingAboutThem}} and {{plausibleTieIn}}, never use the exact information provided in a LinkedIn field. Instead, always paraphrase. This makes it seem human written, instead of just an automated message. Also, make it super short. Don't say stuff like \"passionate about turning vision into reality\" or anything like that—be extremely laconic and spartan."
+            },
+            {
+              "type": "HumanMessagePromptTemplate",
+              "message": "{\"linkedInFields\":\"Danielle Morgan, Fort Lauderdale, Founder & CEO at DM Creative Agency, previous experience: Regional Sales Director at Out East Eyewear, Account Director at Radancy\"}"
+            },
+            {
+              "type": "HumanMessagePromptTemplate",
+              "message": "{   \"icebreaker\": \"Hey Danielle, loved seeing your creative agency journey. I'm also building brands, thought I'd connect.\" }"
+            },
+            {
+              "type": "AIMessagePromptTemplate",
+              "message": "={\"linkedInFields\":\"{{ $json.first_name }} {{ $json.last_name }}, {{ $json.city }}, {{ $json.title }} at {{ $json.employment_history[0].organization_name }}, previous experience: {{ $json.employment_history[1].title }} at {{ $json.employment_history[1].organization_name }}, {{ $json.employment_history[2].title }} at {{ $json.employment_history[2].organization_name }}\"} "
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        1080,
+        -300
+      ],
+      "id": "1cc16435-51b3-4cf5-be3c-c84fab9dad8c",
+      "name": "Basic LLM Chain1"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "12CzMuyW4qiqWNMtEiaa6-gY8V8K8m9O5Umy5eHIxCV8",
+          "mode": "list",
+          "cachedResultName": "Linkedin outreach",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12CzMuyW4qiqWNMtEiaa6-gY8V8K8m9O5Umy5eHIxCV8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12CzMuyW4qiqWNMtEiaa6-gY8V8K8m9O5Umy5eHIxCV8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "threadUrl": "={{ $('Limit').item.json.linkedin_url }}",
+            "Name": "={{ $('Limit').item.json.name }}",
+            "Icebreaker": "={{ $json.output.icebreaker }}"
+          },
+          "matchingColumns": [
+            "threadUrl"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "threadUrl",
+              "displayName": "threadUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Icebreaker",
+              "displayName": "Icebreaker",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        300,
+        -20
+      ],
+      "id": "ac740b09-fcc8-46e5-b5cc-aa459c193d7c",
+      "name": "Add to Google Sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "avZtFTxBgelyc70W",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -500,
+        -20
+      ],
+      "id": "5ffd0a36-f232-4bb4-811e-2dc1d1bb66b8",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "I6rsRA15Er4Tklj4",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"searchUrl\": \"\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        -160,
+        -20
+      ],
+      "id": "1404a380-739f-4f9e-91d9-977420953bf5",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -60,
+        -20
+      ],
+      "id": "9be9706c-9538-4be6-aa6d-f256c37af18f",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "I6rsRA15Er4Tklj4",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/jljBwyyQakqrL1wae/run-sync-get-dataset-items",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        740,
+        -300
+      ],
+      "id": "8b1db4be-9382-4371-b0d2-2599894ac710",
+      "name": "Scrub Video"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and format the output as required\nconst results = [];\n\nfor (const item of $input.all()) {\n  results.push({\n    json: {\n      cleanOutput: false,\n      totalRecords: 35,\n      url: item.json.output.searchUrl\n    }\n  });\n}\n\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        -300
+      ],
+      "id": "50fd2b23-5b56-4bb7-8529-ebefd35fb74a",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You're a helpful, intelligent sales assistant.",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "Your task is to take as input a natural language description of a prospect audience, and turn that into an Apollo Search URL.  Here's an example of an Apollo Search URL:  https://app.apollo.io/#/people?personLocations[]=United%20States&sortAscending=false&sortByField=%5Bnone%5D&personTitles[]=owner&personTitles[]=ceo&personTitles[]=founder&personTitles[]=partner&page=1&qKeywords=creative%20agency&organizationNumEmployeesRanges[]=1%2C200  This URL describes a search for people that are - Located in the United States. - Hold the titles: Owner, CEO, Founder, or Partner. - Have a keyword association with “creative agency”.  These are the fields you can change:  organizationLocations[], Keywords, personTitles[], and organizationNumEmployeesRanges[]  Do not add or change any other fields. Use the above template.  Requirements: Don't add any text extra just json output.  Return your response in JSON using this format:   \"searchUrl\":\"search url goes here\""
+            },
+            {
+              "type": "HumanMessagePromptTemplate",
+              "message": "={{ $json.body.chatInput }}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        280,
+        -300
+      ],
+      "id": "567c0e50-41fd-47a8-911a-1b539d51f05f",
+      "name": "Basic LLM Chain2"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{   \"icebreaker\": \"Hey Danielle, loved seeing your creative agency journey. I'm also building brands, thought I'd connect.\" }"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        60,
+        -20
+      ],
+      "id": "c1637dad-6b2a-442a-95d0-d43a20957fb4",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"output\": \"Successfully Done\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.3,
+      "position": [
+        1040,
+        -20
+      ],
+      "id": "1a60950e-118f-47b8-a663-9f7bc78bd54d",
+      "name": "Automation",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "=https://api.phantombuster.com/api/v2/containers/fetch-output?id={{ $json.containerId }}\n",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Phantombuster-Key-1",
+              "value": "4pXDbMLohScPnqvlrVytH8IFDY2jXm0AchJXom48aUY"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        340
+      ],
+      "id": "bbbcb6b1-5dcd-4ff0-94d5-8a47fb1ec62f",
+      "name": "Phantom Download Output"
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = $('Phantom Download Output').first().json.output;\n\nconst jsonMatch = output.match(/https:\\/\\/[^\\s]+\\/result\\.json/);\nconst csvMatch = output.match(/https:\\/\\/[^\\s]+\\/result\\.csv/);\n\nreturn [\n  {\n    json: {\n      jsonUrl: jsonMatch ? jsonMatch[0] : null,\n      csvUrl: csvMatch ? csvMatch[0] : null\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        340
+      ],
+      "id": "15401644-5a97-4573-921a-ca07ae9d055b",
+      "name": "Clean URL"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.all();\nlet results = [];\n\nfor (const item of data) {\n  if (item.json.messages && item.json.conversationUrl) {\n    const conversationUrl = item.json.conversationUrl;\n    const messages = item.json.messages;\n\n    // ✅ Sort messages by date (oldest to newest)\n    const sortedMessages = [...messages].sort((a, b) => new Date(a.date) - new Date(b.date));\n\n    let chatText = \"\";\n    let lastMessage = null;\n    let isUserLastMessage = false;\n    let userName = null;\n\n    for (const msg of sortedMessages) {\n      const sender = msg.author === \"Ali Hassan\" ? \"me\" : \"user\";\n\n      // Get other user's name (first time we find a non-me author)\n      if (!userName && sender === \"user\") {\n        userName = `${msg.firstName} ${msg.lastName}`.trim();\n      }\n\n      chatText += `${sender}: ${msg.message}\\n`;\n    }\n\n    // ✅ Get last message object\n    const lastMsgObj = sortedMessages[sortedMessages.length - 1];\n    const lastSender = lastMsgObj.author === \"Ali Hassan\" ? \"me\" : \"user\";\n\n    if (lastSender === \"user\") {\n      lastMessage = lastMsgObj.message;\n      isUserLastMessage = true;\n    }\n\n    results.push({\n      json: {\n        conversationUrl: conversationUrl,\n        userName: userName,\n        chat: chatText.trim(),\n        lastMessage: lastMessage,\n        isUserLastMessage: isUserLastMessage\n      }\n    });\n  }\n}\n\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        580
+      ],
+      "id": "72f883b3-edda-4e99-bd05-cd3fb3300d27",
+      "name": "Clean Data And Add Full Name"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1ppt9rQHtBCc_ZzGf4lbcodm2Xzsd8HT0HOcwG_THKY8",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Automation Spreadsheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ppt9rQHtBCc_ZzGf4lbcodm2Xzsd8HT0HOcwG_THKY8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1879291935,
+          "mode": "list",
+          "cachedResultName": "Reply",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ppt9rQHtBCc_ZzGf4lbcodm2Xzsd8HT0HOcwG_THKY8/edit#gid=1879291935"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ConversationUrl": "={{ $json.conversationUrl }}",
+            "Messgae": "={{ $json.output }}",
+            "Name": "={{ $json.userName }}"
+          },
+          "matchingColumns": [
+            "ConversationUrl"
+          ],
+          "schema": [
+            {
+              "id": "ConversationUrl",
+              "displayName": "ConversationUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Messgae",
+              "displayName": "Messgae",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        800,
+        860
+      ],
+      "id": "b2ac1870-52b7-4dc9-a0d3-c9eb625f281b",
+      "name": "Add Data In Sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "avZtFTxBgelyc70W",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://api.phantombuster.com/api/v2/agents/launch",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "id",
+              "value": "7142731735912788"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1140,
+        860
+      ],
+      "id": "e809add6-c992-4a95-9134-1aa8190fd43a",
+      "name": "Phantumbuster Message Send",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "5Hd30lyShmFcQbWq",
+          "name": "Open WebUI"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 2,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        660,
+        340
+      ],
+      "id": "01fcc165-c01a-4584-895c-2e00222f3f90",
+      "name": "Wait",
+      "webhookId": "fc66d4fc-ccf5-4aa4-9bb3-b977828916bf"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "990cfbfb-fb2b-4ffb-832a-3ac3cc4ffb92",
+              "leftValue": "={{ $json.isUserLastMessage }}",
+              "rightValue": "=",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        520,
+        580
+      ],
+      "id": "574c5845-eb7b-4da8-9831-623211d750de",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an AI assistant trained only to answer questions or messages strictly related to CraftyAutomation, a company offering AI and automation solutions for the real estate industry. You have full knowledge of CraftyAutomation’s services, team, pitch, and unique selling points.\n\nFull Chat: {{ $json.chat }}\nlast Message: {{ $json.lastMessage }}\nFrom: {{ $json.userName }}",
+        "options": {
+          "systemMessage": "=You're a helpful assistant at CraftyAutomation. Here's what you know about the company:\n\nCompany: CraftyAutomation  \nFounder: Noman Ishfaq  \nIndustry: Real estate automation\n1. CraftyAutomation: Company Overview CraftyAutomation appears to be a small business or startup, led by founder Noman Ishfaq, specializing in AI and automation solutions, particularly for the real estate industry. The company’s pitch and approach focus on building and deploying AI-driven systems that automate key business processes for real estate teams and solo realtors.  2. What They Offer Core Services and Solutions:  AI Voice Agent + CRM Automation:  Builds 24/7 AI voice agents to qualify leads over the phone.  Integrates with CRM systems to automatically update lead details.  Sets up automated SMS and email follow-ups.  AI Video & Research Agent Automation:  Implements video automation fun \"relevant\" or \"ignore\" based on  \"relevant\" or \"ignore\" based on nels for new leads (using HeyGen).  Creates AI research assistants to find and summarize investment properties.  Automates welcome emails and personalized responses for new inquiries.  Outcome:  Saves clients over 10 hours per week by automating calls and data entry.  Ensures every lead is followed up instantly.  Delivers 10+ videos per week without manual editing.  Provides a market edge by surfacing the best properties faster than competitors.  3. Position, Sales, and Revenue Position:  CraftyAutomation is positioned as a boutique automation provider, focusing on real estate and leveraging AI to solve specific pain points for agents and teams.  Sales and Revenue:  No public data is available regarding sales volume or revenue. The company is described as a startup with recent client engagements.  Company Size:  Based on available information, it is likely a small team or solo operation, similar to other boutique automation consultancies.  4. Pitch CraftyAutomation’s Pitch:  “We don’t just talk AI. We build & deploy systems that save time, book calls, and grow real estate businesses—on autopilot. Here’s what we’ve done: AI voice agents, CRM automation, AI video funnels, and research agents. Want to see what we can build for you? Book a quick call at the top of my profile.”  5. Testimonials Client 1 (Real Estate Team):  Saved 10+ hours/week previously spent on calls and data entry.  Ensured every lead was followed up instantly.  Client 2 (Solo Realtor):  Delivered 10+ videos/week without manual editing.  Gave a market edge by surfacing the best properties faster than competitors.  These are not formal testimonials but direct results reported by the founder for client engagements.  6. What’s Unique in Their Offer Unique Selling Points:  End-to-End Automation:  Offers a comprehensive suite of automation tools tailored for real estate, from lead qualification to follow-up and research.  AI-Powered Voice and Video Agents:  Provides 24/7 AI voice agents and video automation, which is not common among small automation providers.  Seamless CRM Integration:  Automatically updates CRM systems, reducing manual data entry.  Custom Solutions:  Builds bespoke automation workflows based on client needs, not just off-the-shelf products.  7. Distinction from Similar Companies There is a company called Crafty (craftydelivers.com) that focuses on office pantry and inventory management automation, but this is a separate entity from CraftyAutomation. Crafty (craftydelivers.com) offers:  Automated inventory management for office pantries.  Order automation based on consumption patterns.  Centralized reporting and budget tracking.  Onsite support and expert guidance for workplace food programs.  8. Summary Table Aspect\tCraftyAutomation (AI Automation)\tCrafty (Office Pantry Automation) Industry\tReal Estate, AI Automation\tOffice Pantry, Food & Beverage Offerings\tAI voice, video, CRM, research automation\tInventory, order, reporting automation Unique Features\t24/7 AI agents, CRM integration\tReorder thresholds, onsite support Testimonials\tHours saved, instant follow-up\tTime savings, improved visibility\n\nYou're just a normal human at CraftyAutomation casually chatting on LinkedIn.\n\nCraftyAutomation helps real estate agents with:\n- AI voice agents to qualify leads\n- CRM automation\n- HeyGen video funnels\n- AI property research tools\n- Saving 10+ hrs/week via automation\n\nHow to reply:\n- Only respond if the message is related to this info.\n- Keep it super short.\n- Use multiple lines (1 thought per line).\n- No formal tone.\n- Sound warm, natural, human.\n\nExample:\nHey [Name]  \nYeah we actually help agents automate follow-ups  \nAnd use AI to qualify leads 24/7  \nWant me to show you how it works?"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        780,
+        560
+      ],
+      "id": "b3263dfe-80e0-4450-bb9e-ccb7f289cc25",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        1300,
+        560
+      ],
+      "id": "7fb1a23f-5a6c-4d77-bf67-39a46a5d1bb8",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.phantombuster.com/api/v2/agents/launch",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Phantombuster-Key-1",
+              "value": "4pXDbMLohScPnqvlrVytH8IFDY2jXm0AchJXom48aUY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"id\": \"5667867891413801\",\n  \"save\": true,\n  \"argument\": {\n    \"sessionCookie\": \"AQEDAVEow5IEBOFYAAABlgp3rxMAAAGXxxR-CFYAOQmDDvzOxsadTubiR4w-LncG_l2YDUUCbbInWyCsJWRz4vGFLXdeqP3rmbLl6S3WLHBoSvela-XyW6TphbbRBamub1shkUeIPz0WwMReigwEqrlg\",\n    \"spreadsheetUrl\": \"https://docs.google.com/spreadsheets/d/1ppt9rQHtBCc_ZzGf4lbcodm2Xzsd8HT0HOcwG_THKY8\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        420,
+        340
+      ],
+      "id": "2b6148d6-4006-46ff-8aa7-c89d049ab712",
+      "name": "Fetch Inbox"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.jsonUrl }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1300,
+        340
+      ],
+      "id": "0f593ff9-a747-40d7-ad7d-c72cc2bd658b",
+      "name": "Json Data"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        960,
+        860
+      ],
+      "id": "3c513093-2bf8-4efb-beef-4357e04a4aa5",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// JavaScript code in \"Value Expression\" mode\nconst now = new Date();\nconst mm = String(now.getMonth() + 1).padStart(2, '0');\nconst dd = String(now.getDate()).padStart(2, '0');\nconst yyyy = now.getFullYear();\nconst today = `${mm}-${dd}-${yyyy}`;\nreturn [{ json: { today } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        340
+      ],
+      "id": "96081832-7db8-4ea1-9e6c-05265c8a9b63",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "inputText": "=Input: {{ $json.output }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Message ",
+              "description": "its look like message,any type message."
+            },
+            {
+              "category": "empty",
+              "description": "It's look like message is empty, no response, null."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        880
+      ],
+      "id": "948b7baa-db2b-4a56-a774-a3e9775cefb0",
+      "name": "Text Classifier1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        840
+      ],
+      "id": "130b49c5-7ff3-4653-a59d-06121eb19434",
+      "name": "Groq Chat Model2",
+      "credentials": {
+        "groqApi": {
+          "id": "xLSQRABRBCRfmWjf",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        1020
+      ],
+      "id": "b2969e48-f451-4468-9528-832edc877d62",
+      "name": "Groq Chat Model3",
+      "credentials": {
+        "groqApi": {
+          "id": "xLSQRABRBCRfmWjf",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"output\": \"Successfully Done\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.3,
+      "position": [
+        1300,
+        860
+      ],
+      "id": "2a794bdb-e202-4e27-b998-19d823e3be5a",
+      "name": "Automation1"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 480,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -300,
+        680
+      ],
+      "typeVersion": 1,
+      "id": "a13b038f-3db7-4904-ae80-6fc80dd6e1cb",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "clear",
+        "documentId": {
+          "__rl": true,
+          "value": "1ppt9rQHtBCc_ZzGf4lbcodm2Xzsd8HT0HOcwG_THKY8",
+          "mode": "list",
+          "cachedResultName": "LinkedIn Automation Spreadsheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ppt9rQHtBCc_ZzGf4lbcodm2Xzsd8HT0HOcwG_THKY8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1879291935,
+          "mode": "list",
+          "cachedResultName": "Reply",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ppt9rQHtBCc_ZzGf4lbcodm2Xzsd8HT0HOcwG_THKY8/edit#gid=1879291935"
+        },
+        "clear": "specificRows",
+        "startIndex": 2,
+        "rowsToDelete": 200
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        640,
+        860
+      ],
+      "id": "ce992acd-7bab-4d6d-8621-2022678074de",
+      "name": "Clear sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "avZtFTxBgelyc70W",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "#  Lead Scraping & Enrichment System (Module 1)\n",
+        "height": 1580,
+        "width": 1240,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1340,
+        -420
+      ],
+      "typeVersion": 1,
+      "id": "ab2e4c8c-8971-4c2b-ad13-c51568d0c248",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        3520,
+        -340
+      ],
+      "id": "78cbb5e0-3e91-440f-a539-cfdb12486743",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b0838a1f-fdda-422f-a433-84dbc6980e3e",
+              "leftValue": "={{ $json.employment_history[0].organization_name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        2320,
+        -360
+      ],
+      "id": "255586e8-d1a2-47e1-a3a2-5f7578c594b8",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.reachinbox.ai/api/v1/lead-list/create",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "={{ $('Webhook').item.json.body.lead_list_name }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3060,
+        -340
+      ],
+      "id": "31daeb16-3448-4683-a781-7e0a5735e472",
+      "name": "Lead List",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "gYqbJC0aCqODf1Dj",
+          "name": "ReachInbox Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "maxItems": 3
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        2880,
+        -340
+      ],
+      "id": "a92d4d95-6cc0-47b4-b483-cf083d120047",
+      "name": "Limit4",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.reachinbox.ai/api/v1/lead-list/add-leads",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"leadsListId\": \"{{ $json.list_id }}\",\n  \"leads\": [\n    {\n      \"list_id\": \"{{ $json.list_id }}\",\n      \"email\": \"{{ $json.email }}\",\n      \"firstName\": \"{{ $json.first_name }}\",\n      \"industry\": \"{{ $json.industry }}\",\n      \"lastName\": \"\",\n      \"companyName\": \"{{ $json.company }}\",\n      \"Personalization Line\": \"{{ $json.personalization }}\",\n      \"painpoint\": \"{{ $json.painpoint }}\",\n      \"pitch\": \"{{ $json.pitch }}\",\n      \"title\": \"{{ $json.title }}\"\n    }\n  ],\n  \"newCoreVariables\": [\n    \"list_id\",\n    \"email\",\n    \"firstName\",\n    \"industry\",\n    \"lastName\",\n    \"companyName\",\n    \"Personalization Line\",\n    \"painpoint\",\n    \"pitch\",\n    \"title\"\n  ],\n  \"duplicates\": []\n}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3800,
+        -140
+      ],
+      "id": "0fc8d45d-8e28-4443-9f93-f3842f3649a9",
+      "name": "Filling Lead Sheet1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "gYqbJC0aCqODf1Dj",
+          "name": "ReachInbox Auth"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7016ee52-1333-431c-8daa-0e2849ef5fb2",
+              "name": "lead_list_id",
+              "value": "={{ $('Loop Over Items1').item.json.list_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4360,
+        -140
+      ],
+      "id": "9f012208-be8f-40c4-bbcf-121bf5debb56",
+      "name": "Edit Fields6"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "12b2e081-b90a-4577-b0d4-bf1c01cf79aa",
+              "name": "first_name",
+              "value": "={{ $('Loop Over Items6').item.json.firstname }}",
+              "type": "string"
+            },
+            {
+              "id": "7fbe9369-9c87-4a51-bef8-4d85cf3ae35c",
+              "name": "industry",
+              "value": "={{ $('Loop Over Items6').item.json.industry }}",
+              "type": "string"
+            },
+            {
+              "id": "6f8f43bd-d643-4375-9bcf-472aa4836f40",
+              "name": "email",
+              "value": "={{ $('Loop Over Items6').item.json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "a29efd30-59cd-4db2-afe7-2737160b6045",
+              "name": "painpoint",
+              "value": "={{ $('Loop Over Items6').item.json.painpoint }}",
+              "type": "string"
+            },
+            {
+              "id": "e18d13aa-cb46-455c-a481-72fc082b4d89",
+              "name": "personalization",
+              "value": "={{ $('Loop Over Items6').item.json.personalization }}",
+              "type": "string"
+            },
+            {
+              "id": "a0f3a824-cb73-40d1-8771-b33bb6ea9c22",
+              "name": "pitch",
+              "value": "={{ $('Loop Over Items6').item.json.pitch }}",
+              "type": "string"
+            },
+            {
+              "id": "5d615be5-67fd-466f-9dda-1e28ef6385ab",
+              "name": "list_id",
+              "value": "={{ $items()[$items().length - 1].json.data.id }}",
+              "type": "string"
+            },
+            {
+              "id": "f1ab87ad-97e2-40eb-af25-aa88c29cfe6e",
+              "name": "company",
+              "value": "={{ $('Loop Over Items6').item.json.company}}",
+              "type": "string"
+            },
+            {
+              "id": "60d89e64-572e-4052-b193-aa3273c2ff2b",
+              "name": "title",
+              "value": "={{ $('Loop Over Items6').item.json.title }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3300,
+        -340
+      ],
+      "id": "ebbe9145-0296-48ee-9631-c8d7394ff961",
+      "name": "Edit Fields7"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "037b3085-f2a8-40d6-a617-c4ce300f606d",
+              "name": "lead_list_id",
+              "value": "={{ $json.lead_list_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3800,
+        -340
+      ],
+      "id": "53d7c99f-fe8c-413a-820f-cd8f2864afef",
+      "name": "Edit Fields8"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "https://api.reachinbox.ai/api/v1/campaigns/set-accounts",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"accountsToUse\": [\n    \"thea@scaleleadersclub.com\"\n  ],\n  \"campaignId\":71883\n} ",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4020,
+        -340
+      ],
+      "id": "78acca6e-6f7b-4f48-8aca-cfe084da133c",
+      "name": "Set Account1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "gYqbJC0aCqODf1Dj",
+          "name": "ReachInbox Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.reachinbox.ai/api/v1/campaigns/add-email",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"campaignId\":,71833\n  \"emails\": [\n    \"thea@scaleleadersclub.com\"\n  ]\n}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4380,
+        -340
+      ],
+      "id": "0ccdf0b4-e796-4099-8d41-aff0890ce7fb",
+      "name": "Add Emails1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "gYqbJC0aCqODf1Dj",
+          "name": "ReachInbox Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "https://api.reachinbox.ai/api/v1/campaigns/set-schedule",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"campaignId\": {{ $('On form submission1').item.json.compaign_id }},\n  \"startDate\": \"{{ $now.setZone('America/Chicago').toUTC().toISO() }}\",\n  \"endDate\": \"{{ $now.setZone('America/Chicago').plus({ days: 7 }).toUTC().toISO() }}\",\n  \"schedules\": [\n    {\n      \"name\": \"New schedule\",\n      \"timing\": {\n        \"from\": \"10:00\",\n        \"to\": \"23:00\"\n      },\n      \"days\": {\n        \"0\": false,\n        \"1\": true,\n        \"2\": true,\n        \"3\": true,\n        \"4\": true,\n        \"5\": true,\n        \"6\": false\n      },\n      \"timezone\": \"America/Alabama\"\n    },\n    {\n      \"name\": \"New schedule 2\",\n      \"timing\": {\n        \"from\": \"10:00\",\n        \"to\": \"12:00\"\n      },\n      \"days\": {\n        \"0\": false,\n        \"1\": true,\n        \"2\": true,\n        \"3\": true,\n        \"4\": true,\n        \"5\": true,\n        \"6\": false\n      },\n      \"timezone\": \"America/Alabama\"\n    }\n  ]\n}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2940,
+        80
+      ],
+      "id": "aaac78d7-25b3-4e69-a033-9bd885eeed8a",
+      "name": "Set Schedule1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "gYqbJC0aCqODf1Dj",
+          "name": "ReachInbox Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.reachinbox.ai/api/v1/lead-list/copy-leads-to-campaign",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"campaignId\": {{ $('Webhook').item.json.body.compaign_id }},\n  \"leadsListId\": {{ $('Edit Fields8').item.json.lead_list_id }}\n}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          },
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3160,
+        80
+      ],
+      "id": "d960fc8c-d393-4fe3-a80f-3d4d011d0715",
+      "name": "Add Lead List to Compaign1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "gYqbJC0aCqODf1Dj",
+          "name": "ReachInbox Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b0838a1f-fdda-422f-a433-84dbc6980e3e",
+              "leftValue": "={{ $('Apify Leads Info').item.json.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        2160,
+        -180
+      ],
+      "id": "61f0e8f6-3722-429d-be97-1827278e3dee",
+      "name": "Filter4"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        2580,
+        220
+      ],
+      "id": "58bb0e95-fdba-491f-afbd-5b8bf419146c",
+      "name": "Loop Over Items6"
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputData = $input.first().json;\n\nif (inputData) {\n  if (inputData.personalization)\n    inputData.personalization = inputData.personalization.replace(/\\n/g, \"\\\\n \");\n\n  if (inputData.painpoint)\n    inputData.painpoint = inputData.painpoint.replace(/\\n/g, \"\\\\n\");\n}\n\nreturn inputData;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1640,
+        720
+      ],
+      "id": "5db62ae0-b898-4489-bf35-56076d5cf2b0",
+      "name": "Code8"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "67f3c83d-5b70-4249-a1ff-fea414149262",
+              "leftValue": "={{ $json.annual_revenue }}",
+              "rightValue": 2,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        2080,
+        720
+      ],
+      "id": "b28b2769-3f61-4319-a4f4-da92c740e61e",
+      "name": "Filter5",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "Title",
+              "cssSelector": "title",
+              "returnValue": "attribute",
+              "attribute": "text"
+            },
+            {
+              "key": "Descripton",
+              "cssSelector": "meta[name=\"description\"]",
+              "returnValue": "attribute",
+              "attribute": "content"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        1860,
+        220
+      ],
+      "id": "af88181d-2ff4-4b5f-813b-890fbbb43131",
+      "name": "HTML1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const rawOutput = $input.first().json.message.content;// Replace with correct reference if different\n\nfunction extractJsonBlock(text) {\n  try {\n    const start = text.indexOf('{');\n    const end = text.lastIndexOf('}');\n\n    if (start === -1 || end === -1 || end <= start) {\n      throw new Error('No valid JSON block found');\n    }\n\n    const jsonString = text.substring(start, end + 1);\n    const parsed = JSON.parse(jsonString);\n    return parsed;\n  } catch (error) {\n    return { error: \"Invalid JSON in LLM output\", message: error.message };\n  }\n}\n\n// Return as output of Function node\nreturn [ \n  {\n    json: extractJsonBlock(rawOutput)\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1800,
+        480
+      ],
+      "id": "9b5337e2-a860-41fe-b4bd-4c97e1d31f01",
+      "name": "Parse Json1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const rawOutput = $input.first().json.text // Replace with correct reference if different\n\nfunction extractJsonBlock(text) {\n  try {\n    const start = text.indexOf('{');\n    const end = text.lastIndexOf('}');\n\n    if (start === -1 || end === -1 || end <= start) {\n      throw new Error('No valid JSON block found');\n    }\n\n    const jsonString = text.substring(start, end + 1);\n    const parsed = JSON.parse(jsonString);\n    return parsed;\n  } catch (error) {\n    return { error: \"Invalid JSON in LLM output\", message: error.message };\n  }\n}\n\n// Return as output of Function node\nreturn [ \n  {\n    json: extractJsonBlock(rawOutput)\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1960,
+        -140
+      ],
+      "id": "be13f2d5-bf83-46f2-b4a0-ff1f26804607",
+      "name": "Parsing Json"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1420,
+        -160
+      ],
+      "id": "9e8a230a-0237-4b98-a483-90d5b69b7dd2",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "maxItems": 100
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        2100,
+        -360
+      ],
+      "id": "bcb91e24-dcd2-4ff2-a433-9d2cc7af251b",
+      "name": "Limit1"
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1660,
+        -360
+      ],
+      "id": "2b64ca1c-a32c-4fe3-9a69-0e4c12cb8e89",
+      "name": "Wait1",
+      "webhookId": "760494fe-8f22-43ee-8d93-51a130cc64d5"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2720,
+        720
+      ],
+      "id": "43ee9e9b-d597-4143-8e8e-d3125e5790dc",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "I6rsRA15Er4Tklj4",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const rawOutput = $input.first().json.data[0].text// Replace with correct reference if different\n\nfunction extractJsonBlock(text) {\n  try {\n    const start = text.indexOf('{');\n    const end = text.lastIndexOf('}');\n\n    if (start === -1 || end === -1 || end <= start) {\n      throw new Error('No valid JSON block found');\n    }\n\n    const jsonString = text.substring(start, end + 1);\n    const parsed = JSON.parse(jsonString);\n    return parsed;\n  } catch (error) {\n    return { error: \"Invalid JSON in LLM output\", message: error.message };\n  }\n}\n\n// Return as output of Function node\nreturn [ \n  {\n    json: extractJsonBlock(rawOutput)\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1420,
+        720
+      ],
+      "id": "d5cd1069-9f4a-4238-8956-e7808f63805c",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2600,
+        480
+      ],
+      "id": "cef51bb6-994f-4f46-b26c-bd2a371ee8c1",
+      "name": "Aggregate2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Name:{{ $('Apify Leads Info').item.json.first_name }}\nCompany Name: :{{ $('Apify Leads Info').item.json.employment_history[0].organization_name }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are an intelligent extractor that parses short business profile information.\n\nInput:\n\n\nA companyName like WATG Inc., Icanvas Corp., CraftyAutomaiton LTD.\n\nYour job is to:\n\n\nExtract a clean company name from the domain by removing the LTD,Inc, Corp. \n\nReturn the Output result in this exact JSON format:\n\njson\nCopy\nEdit\n{\n  \"companyName\": \"Clemsy\"\n}\n\nif there isn't any changes required in company name then return as it is."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        1620,
+        -140
+      ],
+      "id": "1a340514-e361-4d30-b7c4-8c9cc84348c2",
+      "name": "Basic LLM Chain4"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "Compaign has launched successfully.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.3,
+      "position": [
+        3400,
+        100
+      ],
+      "id": "458f4775-c22c-46a3-956a-a3c3964dc3b2",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "content": "# Email Outreach (Module 3)",
+        "height": 980,
+        "width": 1760
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2620,
+        -400
+      ],
+      "typeVersion": 1,
+      "id": "e35a9809-0686-4ad3-b856-ca8bc8bcf4d1",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 540,
+        "width": 260,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2640,
+        620
+      ],
+      "typeVersion": 1,
+      "id": "12e003ab-9594-4057-ad50-7bafc0a78bd4",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        2720,
+        860
+      ],
+      "id": "9161e500-9ee4-442d-9a73-813c51463602",
+      "name": "Groq Chat Model4",
+      "credentials": {
+        "groqApi": {
+          "id": "xLSQRABRBCRfmWjf",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 540,
+        "width": 1460
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -160,
+        -960
+      ],
+      "typeVersion": 1,
+      "id": "ac6bc714-e983-4ef5-9d71-8a5bc82ab668",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 480,
+        "width": 280,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -620,
+        680
+      ],
+      "typeVersion": 1,
+      "id": "1b8f4234-4a0d-4028-89cb-765382ae7890",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "base": {
+          "__rl": true,
+          "value": "applSgemDoIsqCG84",
+          "mode": "list",
+          "cachedResultName": "Untitled Base",
+          "cachedResultUrl": "https://airtable.com/applSgemDoIsqCG84"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblauxEKVe3us3GDM",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/applSgemDoIsqCG84/tblauxEKVe3us3GDM"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $('Create or update a record1').item.json.id }}",
+            "Personalization": "={{ $json.personalization }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Org Name",
+              "displayName": "Org Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Google Url",
+              "displayName": "Google Url",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "City",
+              "displayName": "City",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "State",
+              "displayName": "State",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Zip",
+              "displayName": "Zip",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Linkedin",
+              "displayName": "Linkedin",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Personalization",
+              "displayName": "Personalization",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2480,
+        740
+      ],
+      "id": "4be0c8cb-fe0f-4629-967a-52b7f8911da9",
+      "name": "Create or update a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "uLZBlcd7yMt7H6qr",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "base": {
+          "__rl": true,
+          "value": "={{ $('Webhook').item.json.body.sheet_url }}",
+          "mode": "url"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblauxEKVe3us3GDM",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/applSgemDoIsqCG84/tblauxEKVe3us3GDM"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Org Name": "={{ $json.companyName }}",
+            "First Name": "={{ $('Apify Leads Info').item.json.first_name}}",
+            "Last Name": "={{ $('Apify Leads Info').item.json.last_name}}",
+            "Title": "={{ $('Apify Leads Info').item.json.headline}}",
+            "Phone": "='{{ $('Apify Leads Info').item.json.organization.primary_phone.sanitized_number }}",
+            "Email": "={{ $('Filter').item.json.email }}",
+            "Address": "={{ $('Apify Leads Info').item.json.organization.raw_address }}",
+            "City": "={{ $('Filter').item.json.city }}",
+            "State": "={{ $('Filter').item.json.state }}",
+            "Website": "={{ $('Filter').item.json.organization.website_url }}",
+            "Linkedin": "={{ $('Filter').item.json.linkedin_url }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Org Name",
+              "displayName": "Org Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Google Url",
+              "displayName": "Google Url",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "City",
+              "displayName": "City",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "State",
+              "displayName": "State",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Zip",
+              "displayName": "Zip",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Linkedin",
+              "displayName": "Linkedin",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Personalization",
+              "displayName": "Personalization",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2620,
+        -180
+      ],
+      "id": "6e4c10a6-971d-4016-9d59-68ee7fefd72b",
+      "name": "Create or update a record1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "uLZBlcd7yMt7H6qr",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apify.com/v2/acts/code_crafter~apollo-io-scraper/runs",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "token",
+              "value": "Your_API"
+            },
+            {
+              "name": "page",
+              "value": "1"
+            },
+            {
+              "name": "per_page",
+              "value": "10"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "getPersonalEmails",
+              "value": "true"
+            },
+            {
+              "name": "getWorkEmails",
+              "value": "true"
+            },
+            {
+              "name": "url",
+              "value": "={{ $json.url }} {{ $json.body.apollo_input }}"
+            },
+            {
+              "name": "totalRecords",
+              "value": "={{ $json.totalRecords }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        -360
+      ],
+      "id": "0c4851c7-c043-4b7e-98f6-a85a9424b225",
+      "name": "Apify (Leads Extractor)"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.apify.com/v2/datasets/{{ $json.data.defaultDatasetId}}/items",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "token"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1880,
+        -360
+      ],
+      "id": "593727a5-07b2-456b-a5c7-ea0f2330fade",
+      "name": "Apify Leads Info"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.fields.Website }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept-Language",
+              "value": "en-US,en;q=0.5"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1640,
+        220
+      ],
+      "id": "21a5b4d7-c6c1-4f14-a0d5-808ccb36ec8e",
+      "name": "Scraping of Website",
+      "alwaysOutputData": false,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "5Hd30lyShmFcQbWq",
+          "name": "Open WebUI"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "48afad8e-8099-4a63-a879-efebbcc70ed4",
+              "name": "org_name",
+              "value": "={{ $('Create or update a record1').item.fields.json[\"Org Name\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "d9cc8a8f-14a8-4a75-955a-57950e7a6a00",
+              "name": "Email",
+              "value": "={{ $('Create or update a record1').item.json.fields.Email }}",
+              "type": "string"
+            },
+            {
+              "id": "b4777933-6651-4d70-a372-04832999f016",
+              "name": "Website",
+              "value": "={{ $('Create or update a record1').item.json.fields.Website }}",
+              "type": "string"
+            },
+            {
+              "id": "5eff39a5-a234-47d9-80a7-715623cdcc98",
+              "name": "first_name",
+              "value": "={{ $('Create or update a record1').item.fields.json[\"First Name\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "fc3a055c-055d-4195-9d1d-a4be38481d6f",
+              "name": "website_content",
+              "value": "={{ $json.Descripton }}",
+              "type": "string"
+            },
+            {
+              "id": "687a5a4c-3f72-4362-83fb-330222402e75",
+              "name": "Title",
+              "value": "={{ $('Create or update a record1').item.json.Title }}",
+              "type": "string"
+            },
+            {
+              "id": "51b1eb8f-8b16-4335-9395-535019a19c21",
+              "name": "last_name",
+              "value": "={{ $('Create or update a record1').item.json[\"Last Name\"] }}",
+              "type": "string"
+            },
+            {
+              "id": "04119acb-cd0e-4cae-830d-834daa94ef35",
+              "name": "Linkedin",
+              "value": "={{ $('Create or update a record1').item.json.Linkedin }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2080,
+        220
+      ],
+      "id": "39dc5f4d-0b0e-4862-ba7c-19b4976e273c",
+      "name": "Storing Data"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Org Name:{{ $json.org_name }}\nFirst Name:{{ $json.first_name }}\nLast Name:{{ $json.last_name }}\nTitle:{{ $json.Title }}\nEmail:{{ $json.Email }}\nlinkedin:{{ $json.Linkedin }}\nWebsite:{{ $json.Website }}\nWebsite Content:{{ $json.website_content }}"
+            },
+            {
+              "content": "---\n\n### ✅ **System Prompt: Corporate Lead Research for Personalized Outreach**\n\n> You are a research assistant helping gather personalized insights on **managerial-level employees at large companies**, such as interior designers, marketing managers, or operations leads.\n>\n> Your goal is to return **three specific categories** of insights about each lead to power hyper-personalized outreach. If individual-level data is unavailable, follow fallback logic as described.\n>\n> ---\n>\n> ### 🎯 Focus on the following in this order:\n>\n> #### 1. **Recent Success / Promotion** *(High Priority)*\n>\n> * Identify if the lead has recently:\n>\n>   * Been promoted\n>   * Taken on a new role\n>   * Received awards or public recognition\n>   * Completed a major project or achievement in their role\n> * Use professional platforms like LinkedIn or press releases for validation.\n\n> ---\n>\n> #### 2. **Social Presence / Media Visibility**\n>\n> * Identify if the lead has recently (or historically):\n>\n>   * Posted industry insights or achievements on LinkedIn\n>   * Appeared in press, podcast, panel, webinar, or conference representing their company or team\n>   * Was mentioned or quoted in company blog posts or PR\n> * Pull quotes or moments that validate their leadership visibility.\n\n>\n> ---\n>\n✅ Refined Step 3 – Special Role & Specific Highlights (Impact-Driven Only)\nExtract impact-driven contributions the lead has made in their role.\nDo not settle for general responsibilities or job descriptions (e.g., \"Designs clinic interiors\").\n\nLook for:\n\nQuantifiable outcomes they’ve driven:\n\nProjects completed (e.g., “Designed 7 clinics in 2024”)\n\nEfficiency gains (e.g., “Cut space utilization by 20% through layout optimization”)\n\nBusiness impact (e.g., “Improved patient intake speed by redesigning front-office flows”)\n\nLeadership or ownership moments, such as:\n\n“Sole designer on high-value surgery center”\n\n“Led the interiors portion of a multi-location rollout”\n\nUnique techniques, methods, or industry approaches they introduced or improved:\n\n“Integrated biophilic design elements to reduce patient stress”\n\n❌ Do not include statements like:\n\n“Translates functional needs into aesthetic spaces”\n\n“Plays a pivotal role in projects”\nunless backed by numbers, examples, or results.\n\n✅ Only accept a highlight if it reflects actual achievement, initiative, or measurable outcome.\nIf none is found, proceed to department-level success as fallback.\n\n> ✅ If individual-level data is minimal, fallback to:\n>\n> ### 🔄 Fallback: Department-Level → \nCompany-Success\n>\n> * First, gather **department-level success** (e.g., “design team led 5 major clinic renovations in Q2” or “marketing team expanded brand reach by 40%”).\n> * Then, mention broader **company-level milestones**, such as:\n>\n>   * Awards (e.g., Great Place to Work®)\n>   * New partnerships\n>   * High-profile product launches or geographic expansions\n>\n> ---\n>\n> ### 📝 Output Format (Structured)\n\n```json\n{ \"output\":{\n  \"full_name\": \"Courtney Hammon\",\n  \"title\": \"Interior Designer\",\n  \"company\": \"The Evolutions Group\",\n  \"recent_success\": \"No personal promotion found in past 6 months.\",\n  \"social_presence\": \"Active on LinkedIn; no recent public posts. Previously involved in project announcements via company LinkedIn.\",\n  \"role_highlights\": \"Designed 7 dental clinics in 2023 and led the OR layout redesign that reduced patient movement by 25%\", \n  \"department_success\": \"Design department successfully delivered 4 multi-office renovations in 2024, improving operational flow and patient experience.\",\n  \"company_success\": \"The Evolutions Group earned Great Place to Work® certification in Dec 2024 and recently partnered with IGO on the Azura Residences project in Dubai.\"\n}\n}\n```                  \n\n---\nRemember remain title empty when there is no title mentioned.\n",
+              "role": "system"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1400,
+        480
+      ],
+      "id": "26c75d88-c04f-46c8-a5d4-564f1f6cf036",
+      "name": "Research For Lead",
+      "credentials": {
+        "openAiApi": {
+          "id": "I6rsRA15Er4Tklj4",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Org Name:{{ $('Loop Over Items6').item.json.org_name }}\nPerson Name: {{ $('Loop Over Items6').item.json.first_name }}\nemail:{{ $('Loop Over Items6').item.json.Email }}\nlinkedin:{{ $('Loop Over Items6').item.json.Linkedin }}\nwebsite:{{ $('Loop Over Items6').item.json.Website }}\nwebsite Content:{{ $json.website_content }}\nresearch:\nresearch:{{ $json.output.recent_success }}\n{{ $json.output.social_presence }}\n{{ $json.output.role_highlights }}\n{{ $json.output.department_success }}\n{{ $json.output.company_success }}\n",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "\n---\n\n### ✅ **System Prompt: Personalization Generator for Corporate Leads**\n\n> You are a **smart personalization assistant** helping create high-conversion, one-liner personalization for outreach to **mid- to senior-level professionals** at large companies.\n>\n> The goal is to produce a **personalization line** that feels deeply relevant, specific, and respectful of their work and role — using a **waterfall strategy**:\n>\n> ### 🚿 Waterfall Personalization Logic\n>\n> Go through the following stages in order and **STOP** at the first one that has a **valid and rich enrichment**. Valid Enrichment examples. \n\nLed the design and space planning of 7 dental and medical clinics in 2023, including surgical spaces. Spearheaded OR layout optimization that cut patient transfer time by 25% through improved spatial workflows.\n\nMarketing, likely led Encompass Group's strategic positioning and digital campaigns promoting their line of textiles and single-use healthcare products during the post-COVID medical supply chain recovery. \n\nMayo Clinic’s Facilities and Support Services team completed the Arizona East Expansion Project Phase 2 in 2023, a major infrastructure and design milestone that added nearly 1M sq ft and included significant interior planning contributions from design teams.\n\n\n> However, if you encounter any **quantifiable achievement (e.g., \"4 multi-office renovations\" or \"Team won Best Design Award 2025\")**, then **use that insight regardless of stage** — this overrides the waterfall and becomes top priority. if the waterfall and override both resonate same. that can also happen. \n>\n> ---\n>\n> ### 📍 Stages to Check (In Order):\n>\n> #### 1. 🔥 **Recent Personal Success**\n>\n> * Promotion, award, recognition, or a personal milestone.\n> * Example:\n>\n>   * “Congrats on leading your team to win the High Impact Designer Award 2025 — that’s an amazing reflection of your craft.”\n> * ✅ STOP if found.\n>\n> #### 2. 🌐 **Social Presence or Media Appearance**\n>\n> * Interview, podcast, conference, blog mention, or any presence where they appeared on behalf of their company or team.\n> * Example:\n>\n>   * “Loved your panel appearance on healthcare design trends — your perspective really stood out.”\n> * ✅ STOP if found.\n>\n✅ Step 3 – Personalization System Prompt: Specific Role & Work Highlights (Impact-Based Only)\nYou are generating a personalization sentence focused on a lead’s specific role and accomplishments, but only if they show clear, unique impact.\n\nThis step is used if:\n\nNo recent personal promotion or award was found\n\nNo media or social appearance was found\n\n✅ What to include in the personalization line:\n\nProject Types or Responsibilities:\n\nOnly if tied to real outputs or results, such as:\n\n“Designed 7 dental offices in 2024”\n\n“Led interiors for a multi-location oral surgery expansion”\n\nProcess or Business Impact:\n\nWhat improvements or efficiencies they helped drive?\n\n“Improved patient intake workflow via front-desk redesign”\n\n“Reduced build-out time by 20% through pre-fab design strategy”\n\nTeam/Leadership Role:\n\nIf they led or solely owned something meaningful:\n\n“Sole designer on $2.5M surgical clinic project”\n\n“Managed design execution for 4-site rollout in Q1”\n\n❌ What NOT to include:\n\nGeneral responsibilities (e.g., “designs spaces,” “makes layouts”)\n\nSoft or vague traits (e.g., “plays a pivotal role,” “translates needs into aesthetics”)\n\nAnything that doesn’t show measurable contribution or ownership\n\n\n>\n> #### 4. 🏢 **Department-Level Success (Fallback 1)**\n>\n> * Department performance they’re likely involved in.\n> * Prefer quantifiable metrics (e.g., “4 clinics renovated,” “50% pipeline growth”).\n> * Example:\n>\n>   * “The design team’s 4 completed clinic renovations in 2024 clearly show operational strength — and your role as lead designer makes that even more meaningful.”\n> * ✅ STOP if found.\n>\n> #### 5. 🌍 **Company-Level Success (Fallback 2)**\n>\n> * Company award, expansion, or milestone.\n> * Personalize by linking it to **their specific role** or department.\n> * Example:\n>\n>   * “The Evolutions Group earning Great Place to Work® speaks volumes — and your work shaping patient-centered spaces surely played a part in that culture.”\n>\n> ---\n>\n> ### 🧠 Enrichment Override Rule (Use Anytime):\n>\n> If at **any stage**, you find a **quantitative or high-impact achievement** — like:\n>\n> * “Designed 4 clinics in 2024”\n> * “Won Best Design Team 2025”\n> * “Generated 1M impressions through campaigns”\n>\n> ➤ Use this as the personalization, regardless of its waterfall position.\n>\n> ---\n>\n> ### ✅ Output must be in Strict Json. Format Example:\n\n```json\n{\n  \"full_name\": \"Courtney Hammon\",\n  \"title\": \"Interior Designer,\n  \"company\": \"The Evolutions Group\",\n  \"personalization\": \"Designed 7 dental clinics in 2023 and led the OR layout redesign that reduced patient movement by 25% shows your hands-on impact — you’re not just designing spaces, you’re shaping how they function and flow in high-pressure environments.\"\n}\"\n}\n```\n\n---\n\n\nNo other text initial or after braces."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        2020,
+        480
+      ],
+      "id": "7c71b809-e4ed-4f90-8411-fbcb24fc7cb0",
+      "name": "Personalization Line"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "029dd8d1-eefb-42b6-a2e6-3b1ae30100fb",
+              "name": "pitch",
+              "value": "={{ $json.pitch }}",
+              "type": "string"
+            },
+            {
+              "id": "9a568c9d-9fc4-44bf-b782-b7ddbe910939",
+              "name": "firstname",
+              "value": "={{ $json.firstName }}",
+              "type": "string"
+            },
+            {
+              "id": "e7a618c3-4d67-4750-b4d7-abb8baeb1580",
+              "name": "company",
+              "value": "={{ $json.companyName }}",
+              "type": "string"
+            },
+            {
+              "id": "0b8d7b7f-1b74-4dd4-9c9d-6645c2cd4734",
+              "name": "painpoint",
+              "value": "={{ $json.painpoint }}",
+              "type": "string"
+            },
+            {
+              "id": "d238db92-66e6-441d-a680-bc929c44e31e",
+              "name": "personalization",
+              "value": "={{ $json.personalization }}",
+              "type": "string"
+            },
+            {
+              "id": "77b130b5-70c6-4b6e-bbec-32ff5bb82b45",
+              "name": "opportunity_rating",
+              "value": "={{ $json.opportunity_rating }}",
+              "type": "string"
+            },
+            {
+              "id": "29f6c3f6-d6a5-43e9-ae3b-8b526cc7be04",
+              "name": "product_match",
+              "value": "={{ $json.product_match }}",
+              "type": "string"
+            },
+            {
+              "id": "d5c78573-5199-42e6-b8b3-f5dfbdfa96f5",
+              "name": "using_ai_services_already",
+              "value": "={{ $json.using_ai_services_already }}",
+              "type": "boolean"
+            },
+            {
+              "id": "45e4fc98-dd23-41aa-89dd-b6539c1f67d0",
+              "name": "send_all_services",
+              "value": "={{ $json.send_all_services }}",
+              "type": "boolean"
+            },
+            {
+              "id": "ef290485-b1c9-49a8-9400-92859560b36c",
+              "name": "stage_fit_for_service",
+              "value": "={{ $json.stage_fit_for_service }}",
+              "type": "boolean"
+            },
+            {
+              "id": "12357b5f-fe28-496a-bf41-3ef2b7536f66",
+              "name": "ai_awareness_level",
+              "value": "={{ $json.ai_awareness_level }}",
+              "type": "string"
+            },
+            {
+              "id": "03095733-dba7-4652-bc23-c1bba0ab0fd1",
+              "name": "industry",
+              "value": "={{ $json.industry }}",
+              "type": "string"
+            },
+            {
+              "id": "3977e9d7-82dc-4f3d-b756-0a0146564a50",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "674d269b-85a6-4136-9402-e2e6fa96f7fc",
+              "name": "annual_revenue",
+              "value": "={{ $json.annual_revenue }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1860,
+        720
+      ],
+      "id": "3c9be771-b809-4b95-bf01-dfaf0348457a",
+      "name": "Storing Data (1)"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and format the output as required\nconst results = [];\n\nfor (const item of $input.all()) {\n  results.push({\n    json: {\n      cleanOutput: false,\n      totalRecords: 1500,\n      url: item.json.output.apollo\n    }\n  });\n}\n\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        -740
+      ],
+      "id": "feeea07a-4949-4e06-ab69-ccde36969cb0",
+      "name": "Code3"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        348,
+        -380
+      ],
+      "id": "9a0539a3-67be-4edd-80f7-de9e9cac9bcb",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "I6rsRA15Er4Tklj4",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"apollo\": \"\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        500,
+        -340
+      ],
+      "id": "050d8a77-9a30-47d3-8213-b064512a7e76",
+      "name": "Structured Output Parser3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You're a helpful, intelligent sales assistant.",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "Your task is to take as input a natural language description of a prospect audience, and turn that into an Apollo Search URL.  Here's an example of an Apollo Search URL:  https://app.apollo.io/#/people?personLocations[]=United%20States&sortAscending=false&sortByField=%5Bnone%5D&personTitles[]=owner&personTitles[]=ceo&personTitles[]=founder&personTitles[]=partner&page=1&qKeywords=creative%20agency&organizationNumEmployeesRanges[]=1%2C200  This URL describes a search for people that are - Located in the United States. - Hold the titles: Owner, CEO, Founder, or Partner. - Have a keyword association with “creative agency”. \nhttps://app.apollo.io/#/people?page=1&sortByField=recommendations_score&sortAscending=false&qOrganizationKeywordTags[]=medical%20practices&includedOrganizationKeywordFields[]=tags&includedOrganizationKeywordFields[]=name&personLocations[]=New%20York%2C%20US&personTitles[]=project%20manager\n\nThis is the URl for Newyork,US. And Hold the title of Project Manager etc.. Have a keyword association with “medical practices”. \n\n These are the fields you can change:  organizationLocations[], Keywords, personTitles[], and organizationNumEmployeesRanges[]  Do not add or change any other fields. Use the above template.  Requirements: Don't add any text extra just json output.  \n\nReturn your response in JSON using this format:   \"apollo\":\"search url goes here\"\n"
+            },
+            {
+              "type": "HumanMessagePromptTemplate",
+              "message": "={{ $json.body.apollo_input }}"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        340,
+        -740
+      ],
+      "id": "84ab5aa0-e2e3-4e33-9f4d-b34c250601c7",
+      "name": "Basic LLM Chain6"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a4b88cd2-958c-4b03-adba-4aa116860818",
+              "leftValue": "={{ $json.body.apollo_input }},",
+              "rightValue": "https",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        120,
+        -740
+      ],
+      "id": "93c6e789-4fd1-453c-a5f5-bcbd963551aa",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "base": {
+          "__rl": true,
+          "value": "={{ $('Webhook').item.json.body.sheet_url }}",
+          "mode": "url"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblauxEKVe3us3GDM",
+          "mode": "list",
+          "cachedResultName": "Table 1",
+          "cachedResultUrl": "https://airtable.com/applSgemDoIsqCG84/tblauxEKVe3us3GDM"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Org Name": "={{ $json.companyName }}",
+            "First Name": "={{ $('Apify Leads Info').item.json.first_name}}",
+            "Last Name": "={{ $('Apify Leads Info').item.json.last_name}}",
+            "Title": "={{ $('Apify Leads Info').item.json.headline}}",
+            "Phone": "='{{ $('Apify Leads Info').item.json.organization.primary_phone.sanitized_number }}",
+            "Email": "={{ $('Filter').item.json.email }}",
+            "Address": "={{ $('Apify Leads Info').item.json.organization.raw_address }}",
+            "City": "={{ $('Filter').item.json.city }}",
+            "State": "={{ $('Filter').item.json.state }}",
+            "Website": "={{ $('Filter').item.json.organization.website_url }}",
+            "Linkedin": "={{ $('Filter').item.json.linkedin_url }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Org Name",
+              "displayName": "Org Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Google Url",
+              "displayName": "Google Url",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone",
+              "displayName": "Phone",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Address",
+              "displayName": "Address",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "City",
+              "displayName": "City",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "State",
+              "displayName": "State",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Zip",
+              "displayName": "Zip",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Linkedin",
+              "displayName": "Linkedin",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Personalization",
+              "displayName": "Personalization",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        2720,
+        -40
+      ],
+      "id": "93cca3db-3cd0-49b0-9077-047b083530d7",
+      "name": "Create or update a record2",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "uLZBlcd7yMt7H6qr",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{  $json.body.chatInput }}{{ $json.body.apollo_input }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "✅ SYSTEM PROMPT  You are an AI assistant that receives short descriptive user inputs related to professionals, industries, or businesses. For each input, generate:  A clear, SEO-friendly title (5–12 words) that summarizes the main idea in proper English.  A set of 3–7 relevant tags that highlight important keywords, professions, industries, locations, or other context.  Example:  Input: Interior designer of Hospitality Businesses in New York  Title: Top Interior Designers for Hospitality Businesses in New York  Tags: Interior Design, Hospitality, New York, Commercial Interiors, Hospitality Design  Always follow this structure:  makefile Copy Edit Title: <Your Title> Tags: [Tag1, Tag2, Tag3, ...]"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        -2080,
+        -20
+      ],
+      "id": "1b9fe08a-fe4b-4ad5-b7d5-8ae0674225b3",
+      "name": "Basic LLM Chain5"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -2100,
+        260
+      ],
+      "id": "46ff2ab8-3d7e-4177-9a6a-4b176a519186",
+      "name": "OpenAI Chat Model4",
+      "credentials": {
+        "openAiApi": {
+          "id": "I6rsRA15Er4Tklj4",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"title\": \"\",\n  \"tags\":\"\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -1900,
+        260
+      ],
+      "id": "29be5f21-6549-4425-9f16-8cdf775b0d8b",
+      "name": "Structured Output Parser4"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"title\": \"{{ $json.title }}\",\n\"tags\":\"{{ $json.tags }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.3,
+      "position": [
+        -1500,
+        0
+      ],
+      "id": "9dab1e9e-8a87-498f-ad62-a106f69a64ae",
+      "name": "Automation2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and format the output as required\nconst results = [];\n\nfor (const item of $input.all()) {\n  results.push({\n    json: {\n      cleanOutput: false,\n      totalRecords: 35,\n      title: item.json.output.title,\n      tags:item.json.output.tags\n    }\n  });\n}\n\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1720,
+        -20
+      ],
+      "id": "9c7ce829-b0c4-405c-92e0-10b834874d13",
+      "name": "Code4"
+    },
+    {
+      "parameters": {
+        "inputText": "=Input: \n{{ $json.body.chatInput }}\n{{ $json.body.outreach_type }}\n{{ $json.body.apollo_input }},\n{{ $json.body.sheet_url }},\n{{ $json.body.compaign_id }},\n{{ $json.body.lead_list_name }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "linkedin outreach",
+              "description": "This message look like linked outreach, user are find some lead on linkedin,user provide some detail about agencies."
+            },
+            {
+              "category": "email automation",
+              "description": "=This message related to email automation, e.g Can scrape the apify leads from Google Map  35% leads will get emails.  Ready without pitch, so this related to email automation"
+            },
+            {
+              "category": "linkedin followup",
+              "description": "=this message related to linkedin follow up, its look like user wnat to sreply back with user, some thing like ,reply my all linkedin user."
+            },
+            {
+              "category": "Ignore",
+              "description": "=This message not related to any field, may be its user first message or user say ,hy,hello,this type of message not related to any field."
+            },
+            {
+              "category": "Follow Up Run",
+              "description": "This is message with default query like for email automation or linkedin,email,interior designer of hospitality industry in newyork,us.  designer,Your_sheet_url,your_campaign_id,Your_Lead_List_Name.\n\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        -2400,
+        -440
+      ],
+      "id": "165c280e-9ba2-4b6d-9f0d-faaab66acc50",
+      "name": "Text Classifier2"
+    }
+  ],
+  "pinData": {
+    "Trigger PhantomBuster Agent": [
+      {
+        "json": {
+          "containerId": "7566659871943654"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Groq Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Trigger PhantomBuster Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain1": {
+      "main": [
+        [
+          {
+            "node": "Add to Google Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add to Google Sheet": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger PhantomBuster Agent": {
+      "main": [
+        [
+          {
+            "node": "Automation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain2",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Scrub Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrub Video": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain2": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Phantom Download Output": {
+      "main": [
+        [
+          {
+            "node": "Clean URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean URL": {
+      "main": [
+        [
+          {
+            "node": "Json Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean Data And Add Full Name": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Data In Sheet": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Phantom Download Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Inbox": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Json Data": {
+      "main": [
+        [
+          {
+            "node": "Clean Data And Add Full Name",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Phantumbuster Message Send",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Fetch Inbox",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier1": {
+      "main": [
+        [
+          {
+            "node": "Clear sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Text Classifier1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Phantumbuster Message Send": {
+      "main": [
+        [
+          {
+            "node": "Automation1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear sheet": {
+      "main": [
+        [
+          {
+            "node": "Add Data In Sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields8",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Filling Lead Sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead List": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit4": {
+      "main": [
+        [
+          {
+            "node": "Lead List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filling Lead Sheet1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields6": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields7": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields8": {
+      "main": [
+        [
+          {
+            "node": "Set Account1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Account1": {
+      "main": [
+        [
+          {
+            "node": "Add Emails1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Emails1": {
+      "main": [
+        [
+          {
+            "node": "Set Schedule1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Schedule1": {
+      "main": [
+        [
+          {
+            "node": "Add Lead List to Compaign1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Lead List to Compaign1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter4": {
+      "main": [
+        [
+          {
+            "node": "Create or update a record1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items6": {
+      "main": [
+        [
+          {
+            "node": "Limit4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Research For Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code8": {
+      "main": [
+        [
+          {
+            "node": "Storing Data (1)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter5": {
+      "main": [
+        [
+          {
+            "node": "Create or update a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML1": {
+      "main": [
+        [
+          {
+            "node": "Storing Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Json1": {
+      "main": [
+        [
+          {
+            "node": "Personalization Line",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsing Json": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Filter4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Basic LLM Chain4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Apify Leads Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Personalization Line",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Code8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate2": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain4": {
+      "main": [
+        [
+          {
+            "node": "Parsing Json",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain4",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create or update a record": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create or update a record1": {
+      "main": [
+        [
+          {
+            "node": "Scraping of Website",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apify (Leads Extractor)": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apify Leads Info": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scraping of Website": {
+      "main": [
+        [
+          {
+            "node": "HTML1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Storing Data": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Research For Lead": {
+      "main": [
+        [
+          {
+            "node": "Parse Json1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Personalization Line": {
+      "main": [
+        [
+          {
+            "node": "Aggregate2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Storing Data (1)": {
+      "main": [
+        [
+          {
+            "node": "Filter5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "Apify (Leads Extractor)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain6",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser3": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain6",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain6": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Apify (Leads Extractor)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain5": {
+      "main": [
+        [
+          {
+            "node": "Code4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain5",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser4": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain5",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code4": {
+      "main": [
+        [
+          {
+            "node": "Automation2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d746cd41-0147-4e05-a776-122bc7eaa29a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d781785cc92b387d9586bcb00b682ac0a21587ecd0f470f6ad3c828f1905f9f0"
+  },
+  "id": "zkDLC0IPUPBwMPLY",
+  "tags": []
+}
